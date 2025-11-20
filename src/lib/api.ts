@@ -1,90 +1,5 @@
 import supabase from "./supabase";
 
-const BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
-
-export async function login(email: string, password: string) {
-  // Try Supabase authentication first
-  if (supabase) {
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      return {
-        token: data.session?.access_token,
-        user: {
-          id: data.user?.id,
-          email: data.user?.email,
-        }
-      };
-    } catch (err: any) {
-      console.error("Supabase login error:", err);
-      throw new Error(err.message || 'Invalid email or password');
-    }
-  }
-
-  // Fallback to backend API
-  const res = await fetch(`${BASE}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ detail: 'Login failed' }));
-    throw new Error(err.detail || 'Login failed');
-  }
-
-  return res.json();
-}
-
-export async function register(email: string, password: string) {
-  // Try Supabase authentication first
-  if (supabase) {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      // Check if email confirmation is required
-      if (data.user && !data.session) {
-        throw new Error('Please check your email to confirm your account');
-      }
-
-      return {
-        token: data.session?.access_token,
-        user: {
-          id: data.user?.id,
-          email: data.user?.email,
-        }
-      };
-    } catch (err: any) {
-      console.error("Supabase registration error:", err);
-      throw new Error(err.message || 'Registration failed');
-    }
-  }
-
-  // Fallback to backend API
-  const res = await fetch(`${BASE}/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ detail: 'Registration failed' }));
-    throw new Error(err.detail || 'Registration failed');
-  }
-
-  return res.json();
-}
-
 export async function getAlerts() {
   try {
     // Check if supabase is configured before trying to use it
@@ -204,4 +119,4 @@ export async function getAlerts() {
   }
 }
 
-export default { login, register, getAlerts };
+export default { getAlerts };

@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import terraLogo from "../assets/terra-civitas.png";
-import api from "@/lib/api";
+import * as auth from "@/lib/auth";
 import { toast } from "sonner";
 
 
@@ -26,7 +26,7 @@ const Register = () => {
 
     (async () => {
       try {
-        const res = await api.register(formData.email, formData.password);
+        const res = await auth.register(formData.email, formData.password);
         toast.success('Registered successfully. Please login.');
         navigate('/login');
       } catch (err: any) {

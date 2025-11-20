@@ -5,9 +5,8 @@ import terraLogo from "../assets/terra-civitas.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-// simplified: single user login form (authority removed)
 import { toast } from "sonner";
-import api from "@/lib/api";
+import * as auth from "@/lib/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,15 +20,14 @@ const Login = () => {
       toast.error("Please fill in all fields");
       return;
     }
-    // Call backend login endpoint and validate credentials
+    // Call Supabase auth and validate credentials
     (async () => {
       try {
-        const res = await api.login(email, password);
-        // expected res: { token, user: { id, email } }
-        const user = res.user || { email };
+        const res = await auth.login(email, password);
+        // Store user in localStorage
         localStorage.setItem('user', JSON.stringify({
-          email: user.email,
-          name: (user.email || email).split('@')[0],
+          email: res.user.email,
+          name: res.user.email.split('@')[0],
           token: res.token,
           role: 'user'
         }));
