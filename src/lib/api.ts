@@ -32,77 +32,12 @@ export async function register(email: string, password: string) {
   return res.json();
 }
 
-// Demo alerts used when backend isn't configured or when fetch fails.
-const DEMO_ALERTS = [
-  {
-    id: "1",
-    type: "critical",
-    title: "Suspicious Activity Detected",
-    location: "Main Street & 5th Ave",
-    timestamp: new Date().toISOString(),
-    description: "Multiple individuals detected in restricted area after hours. Potential security breach.",
-    status: "pending",
-    confidence: 94,
-    weapons_detected: 0,
-    image_url: "",
-  },
-  {
-    id: "2",
-    type: "warning",
-    title: "Unattended Object Alert",
-    location: "Central Station",
-    timestamp: new Date(Date.now() - 15 * 60000).toISOString(),
-    description: "Unattended bag detected in public area. Requires immediate attention.",
-    status: "investigating",
-    confidence: 87,
-    weapons_detected: 0,
-    image_url: "",
-  },
-  {
-    id: "3",
-    type: "info",
-    title: "Crowd Density Warning",
-    location: "Downtown Plaza",
-    timestamp: new Date(Date.now() - 60 * 60000).toISOString(),
-    description: "High crowd density detected. Monitoring for potential incidents.",
-    status: "resolved",
-    confidence: 78,
-    weapons_detected: 0,
-    image_url: "",
-  },
-  {
-    id: "4",
-    type: "critical",
-    title: "Verified: Robbery Attempt",
-    location: "Downtown Bank",
-    timestamp: new Date(Date.now() - 3 * 60 * 60000).toISOString(),
-    description: "Attempted robbery detected and verified by authorities. Suspect apprehended.",
-    status: "verified",
-    confidence: 98,
-    weapons_detected: 1,
-    image_url: "",
-  },
-  {
-    id: "5",
-    type: "warning",
-    title: "Verified: Trespassing Alert",
-    location: "Private Property",
-    timestamp: new Date(Date.now() - 5 * 60 * 60000).toISOString(),
-    description: "Unauthorized access detected and verified. Property secured.",
-    status: "verified",
-    confidence: 92,
-    weapons_detected: 0,
-    image_url: "",
-  },
-];
-
 export async function getAlerts() {
-  // If Supabase client is not configured (no env), fall back to demo alerts.
   try {
     // Check if supabase is configured before trying to use it
     if (!supabase) {
-      console.warn("Supabase not configured, using demo alerts");
-      return DEMO_ALERTS;
+      console.warn("Supabase not configured");
+      return [];
     }
 
     // Query the 'verified_alerts' table. Adjust column names if your schema differs.
@@ -112,14 +47,11 @@ export async function getAlerts() {
       .order("timestamp", { ascending: false });
 
     if (error) {
-      console.error("Supabase getAlerts error:", error);
-      throw new Error(`Failed to fetch alerts: ${error.message}`);
-    }
-
-    if (!data || !Array.isArray(data) || data.length === 0) {
-      console.log("No alerts found in database");
+      console.warn("Supabase getAlerts error:", error);
       return [];
     }
+
+    if (!data || !Array.isArray(data) || data.length === 0) return [];
 
     console.log("Fetched from Supabase:", data);
 
@@ -215,7 +147,7 @@ export async function getAlerts() {
     return mapped;
   } catch (err) {
     console.warn("getAlerts caught error:", err);
-    return DEMO_ALERTS;
+    return [];
   }
 }
 

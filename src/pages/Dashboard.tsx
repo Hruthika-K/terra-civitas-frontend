@@ -9,7 +9,6 @@ const Dashboard = () => {
   const [alerts, setAlerts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -23,10 +22,8 @@ const Dashboard = () => {
 
     async function fetchAlerts() {
       try {
-        // Only show loading on initial load, not on polling
-        if (isInitialLoad) {
-          setLoading(true);
-        }
+        
+        setLoading(true);
         setError(null);
         const data = await api.getAlerts();
         if (!mounted) return;
@@ -43,12 +40,9 @@ const Dashboard = () => {
         if (!mounted) return;
         console.error("Error fetching alerts:", err);
         setError(err?.message ?? "Failed to load alerts");
-        // Don't clear alerts on error - keep showing last successful data
+        setAlerts([]);
       } finally {
-        if (mounted) {
-          setLoading(false);
-          setIsInitialLoad(false);
-        }
+        if (mounted) setLoading(false);
       }
     }
 
@@ -67,7 +61,7 @@ const Dashboard = () => {
         <div className="container mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#2c3e50] to-[#1a252f] flex items-center justify-center shadow-lg">
                 <Shield className="w-6 h-6 text-white" />
               </div>
               <div>

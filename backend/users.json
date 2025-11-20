@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "neha@gmail.com",
+      "password": "$2a$10$WXBSp73Gj8.7.ACh.Aeg5OIqAjql/Rrn0vaiiwfQhZ6B1OHT39Tty",
+      "created_at": "2025-11-16T10:31:34.161Z"
+    },
+    {
+      "id": 2,
+      "email": "niya@gmail.com",
+      "password": "$2a$10$YCYREC8S9Ivp0j65hg8BkOZ0fmok8eDNtJ4u0k7vVQf/UoB7EkZgu",
+      "created_at": "2025-11-16T10:49:14.479Z"
+    },
+    {
+      "id": 3,
+      "email": "h@gmail.com",
+      "password": "$2b$10$L5tOi1QLn6vXYcjgw6E1ie21X88TfUK8g.J0jp.Hv1LZOgPCXiqVK",
+      "created_at": "2025-11-20T05:33:36.609Z"
+    },
+    {
+      "id": 4,
+      "email": "hk@gmail.com",
+      "password": "$2a$10$3xVx7btnGfFTGcej1q9D5.ATck416pOSbPwe6CQwZHixNsoXLFruq",
+      "created_at": "2025-11-20T05:44:55.768Z"
+    },
+    {
+      "id": 5,
+      "email": "tejas@gmail.com",
+      "password": "$2a$10$WRRSjoQ0ydKCElR/aPljmeyDdlWRMzk1kZUTPbhAdPJlo30vJ7pfe",
+      "created_at": "2025-11-20T05:46:15.277Z"
+    }
+  ]
+}
