@@ -1,15 +1,15 @@
-import supabase from "./supabase";
+import { alertsSupabase } from "./supabase";
 
 export async function getAlerts() {
   try {
-    // Check if supabase is configured before trying to use it
-    if (!supabase) {
-      console.warn("Supabase not configured");
+    // Check if alerts supabase is configured before trying to use it
+    if (!alertsSupabase) {
+      console.warn("Alerts Supabase not configured");
       return [];
     }
 
     // Query the 'verified_alerts' table. Adjust column names if your schema differs.
-    const { data, error } = await supabase
+    const { data, error } = await alertsSupabase
       .from("verified_alerts")
       .select("*")
       .order("timestamp", { ascending: false });
@@ -36,7 +36,7 @@ export async function getAlerts() {
       }
       
       // Fetch image from Supabase storage
-      if (row.alert_id && supabase) {
+      if (row.alert_id && alertsSupabase) {
         try {
           let imagePath = "";
           
@@ -53,7 +53,7 @@ export async function getAlerts() {
           // Prepend the folder path
           const fullPath = `verified_alerts/images/${imagePath}`;
           
-          const { data: imageData } = supabase
+          const { data: imageData } = alertsSupabase
             .storage
             .from("alert-images")
             .getPublicUrl(fullPath);
